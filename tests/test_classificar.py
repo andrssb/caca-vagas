@@ -27,6 +27,9 @@ def vaga(**campos):
     ("Programador CNC", ""),
     ("Desenvolvedor de Negócios", ""),
     ("Analista de Atendimento Júnior - Programa Suporte ao Paciente", ""),
+    ("Programador de PLC / Automação Industrial", ""),
+    ("Analista de Suporte Administrativo e Predial", ""),
+    ("Analista de Suporte de TI", "Suporte"),
 ])
 def test_area(titulo, area):
     assert area_de(titulo) == area
@@ -36,6 +39,7 @@ def test_area(titulo, area):
     ("Desenvolvedor Júnior", "", ["junior"]),
     ("Desenvolvedor Jr/Pl", "", ["junior", "pleno"]),
     ("Desenvolvedor Back End I", "", ["junior"]),
+    ("Pessoa Desenvolvedora Backend Python Especialista I - V", "", ["senior"]),
     ("Dev Back End II", "", ["pleno"]),
     ("Desenvolvedor Sr.", "", ["senior"]),
     ("Tech Lead Java", "", ["senior"]),

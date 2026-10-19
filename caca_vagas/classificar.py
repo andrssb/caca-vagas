@@ -26,12 +26,12 @@ AREAS = [
 _AREAS = [(nome, re.compile(padrao)) for nome, padrao in AREAS]
 
 # Títulos com "programação" ou "desenvolvedor" que não são de TI.
-NAO_TI = re.compile(r"\bpcp\b|programac?ao de (producao|materiais)|programador (de producao|cnc|de maquinas)|\bcnc\b|usinagem|desenvolvedor (de negocios|comercial)|desenvolvimento (de negocios|humano|organizacional)|business development|suporte ao paciente|\bmarketing\b")
+NAO_TI = re.compile(r"\bpcp\b|programac?ao de (producao|materiais)|programador (de producao|cnc|de maquinas)|\bcnc\b|usinagem|desenvolvedor (de negocios|comercial)|desenvolvimento (de negocios|humano|organizacional)|business development|suporte ao paciente|suporte administrativo|predial|\bplc\b|\bclp\b|automacao industrial|\bmarketing\b")
 APRENDIZ = re.compile(r"\baprendiz\b|jovem aprendiz")
 
 NIVEIS = [
     ("estagio", re.compile(r"\bestagi(o|ario|aria)\b|\bintern(ship)?\b")),
-    ("junior", re.compile(r"\b(junior|jr|trainee)\b|\bi\b(?=\s*($|[-(|/]))")),
+    ("junior", re.compile(r"\b(junior|jr|trainee)\b")),
     # "pl" sozinho casaria com "PL/SQL"; por isso só com fronteira que não seja barra.
     ("pleno", re.compile(r"\bpleno\b|\bpl\b(?!/)|\bmid(dle)?(-level)?\b|\bii\b")),
     ("senior", re.compile(r"\b(senior|sr|iii|especialista|specialist|lead|lider|principal|staff|arquitet[oa])\b")),
@@ -118,9 +118,16 @@ def area_de(titulo: str) -> str:
     return next((nome for nome, padrao in _AREAS if padrao.search(t)), "")
 
 
+# "Desenvolvedor I" é júnior, mas "Especialista I" não: o I romano só vale sem outra palavra de nível.
+I_ROMANO = re.compile(r"\bi\b(?=\s*($|[-(|/]))")
+
+
 def niveis_de(titulo: str, senioridade: str = "") -> list[str]:
     texto = normalizar(f"{titulo} | {senioridade}")
-    return [nome for nome, padrao in NIVEIS if padrao.search(texto)]
+    niveis = [nome for nome, padrao in NIVEIS if padrao.search(texto)]
+    if not niveis and I_ROMANO.search(normalizar(titulo)):
+        niveis = ["junior"]
+    return niveis
 
 
 def tecnologias_de(vaga: Vaga) -> list[str]:

@@ -11,6 +11,8 @@ concurrency:
 
 jobs:
   coletar:
+    # Ligado pela variável do repositório COLETA_ATIVA=true, depois de cadastrar os segredos do Cloudflare.
+    if: vars.COLETA_ATIVA == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
