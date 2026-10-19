@@ -1,13 +1,11 @@
 """Uso:
-    python -m caca_vagas coletar [--fontes gupy,solides]
-    python -m caca_vagas listar [--top 20]
-    python -m caca_vagas painel [--porta 8000]
+    python -m caca_vagas coletar [--fontes gupy,solides] [--saida vagas.sql]
 """
 
 import argparse
-from contextlib import closing
+from pathlib import Path
 
-from . import banco, coleta, perfil
+from . import coleta
 from .fontes import FONTES
 
 
@@ -16,48 +14,33 @@ def _coletar(args) -> None:
     desconhecidas = set(fontes or []) - set(FONTES)
     if desconhecidas:
         raise SystemExit(f"fonte desconhecida: {', '.join(sorted(desconhecidas))}. Opções: {', '.join(FONTES)}")
-    resumo = coleta.rodar(perfil.carregar(), fontes)
+
+    resumo = coleta.rodar(fontes)
     print()
     for nome, n in resumo.coletadas.items():
-        print(f"{nome:<13} {n:>4} coletadas  {resumo.aceitas[nome]:>3} no perfil")
-    print(f"\nnovas no banco: {resumo.novas}")
+        print(f"{nome:<13} {n:>5} coletadas  {resumo.aceitas[nome]:>5} aceitas")
+    print(f"\ntotal no site: {len(resumo.vagas)}")
     if resumo.recusas:
         print("recusadas por:", ", ".join(f"{motivo} ({n})" for motivo, n in resumo.recusas.most_common()))
+
+    Path(args.saida).write_text(coleta.sql_de(resumo), encoding="utf-8")
+    print(f"SQL gravado em {args.saida}")
+
     for nome, erro in resumo.erros.items():
         print(f"FALHOU {nome}: {erro}")
-
-
-def _listar(args) -> None:
-    with closing(banco.conectar()) as conexao:
-        for v in banco.listar(conexao)[: args.top]:
-            local = v["modalidade"] or "?"
-            if v["cidade"]:
-                local += f" {v['cidade']}"
-            print(f"{v['nota']:>3}  {v['titulo'][:55]:<55}  {v['empresa'][:22]:<22}  {local[:24]:<24}  {v['url']}")
-
-
-def _painel(args) -> None:
-    import uvicorn
-
-    print(f"painel em http://127.0.0.1:{args.porta}")
-    uvicorn.run("caca_vagas.painel:app", host="127.0.0.1", port=args.porta, log_level="warning")
+    # Todas as fontes falharam: não há o que publicar, e o agendador precisa ver o erro.
+    if not resumo.fontes_ok:
+        raise SystemExit(1)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="caca_vagas", description="Caça Vagas: vagas de TI júnior ranqueadas pelo seu perfil")
+    parser = argparse.ArgumentParser(prog="caca_vagas", description="Caça Vagas: coleta de vagas de TI")
     sub = parser.add_subparsers(dest="comando", required=True)
 
-    p = sub.add_parser("coletar", help="busca vagas em todos os portais e grava no banco")
+    p = sub.add_parser("coletar", help="busca vagas em todos os portais e gera o SQL para o banco do site")
     p.add_argument("--fontes", help=f"lista separada por vírgula ({', '.join(FONTES)})")
+    p.add_argument("--saida", default="vagas.sql")
     p.set_defaults(func=_coletar)
-
-    p = sub.add_parser("listar", help="mostra as melhores vagas ainda não tratadas")
-    p.add_argument("--top", type=int, default=20)
-    p.set_defaults(func=_listar)
-
-    p = sub.add_parser("painel", help="abre o painel local no navegador")
-    p.add_argument("--porta", type=int, default=8000)
-    p.set_defaults(func=_painel)
 
     args = parser.parse_args()
     args.func(args)

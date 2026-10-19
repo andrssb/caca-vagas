@@ -1,0 +1,8 @@
+{
+  "name": "caca-vagas",
+  "pages_build_output_dir": "./public",
+  "compatibility_date": "2026-10-01",
+  "d1_databases": [
+    { "binding": "DB", "database_name": "caca-vagas", "database_id": "860b0c40-6e57-4bf4-8057-4c5ea08cc27d" }
+  ]
+}

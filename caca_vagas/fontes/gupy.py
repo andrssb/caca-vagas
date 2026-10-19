@@ -8,6 +8,7 @@ from ..modelo import Vaga
 
 URL = "https://portal.gupy.io/api/job-search/jobs"
 POR_PAGINA = 100
+MAX_POR_TERMO = 1000
 
 CONTRATOS = {
     "vacancy_type_effective": "CLT",
@@ -69,8 +70,8 @@ def coletar(cliente: httpx.Client, termos: list[str]) -> list[Vaga]:
             dados = resposta.json()
             pagina = parse(dados)
             vagas.extend(pagina)
-            total = dados.get("pagination", {}).get("total", 0)
             offset += POR_PAGINA
-            if not pagina or offset >= total:
+            # O "total" da resposta acompanha a página, não a busca: o fim é a página incompleta.
+            if len(pagina) < POR_PAGINA or offset >= MAX_POR_TERMO:
                 break
     return vagas

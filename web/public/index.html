@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caça Vagas</title>
+  <meta name="description" content="Vagas de TI de Gupy, Sólides, Programathor e InfoJobs num lugar só, com filtro por nível, modalidade, estado e tecnologias.">
+  <meta property="og:title" content="Caça Vagas">
+  <meta property="og:description" content="Vagas de TI de 4 portais num lugar só, atualizadas todo dia. Filtre por nível, modalidade, estado e pelas suas tecnologias.">
+  <meta name="theme-color" content="#1f4fe0">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/tema.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/style.css?v=1">
+</head>
+<body>
+  <a class="pular" href="#resultados">Pular para as vagas</a>
+
+  <header class="topo">
+    <div class="topo-dentro">
+      <a class="marca" href="/" aria-label="Caça Vagas, início">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8"/><circle cx="14" cy="14" r="6.5"/><path d="M19 19l6 6"/></svg>
+        <span>caça vagas</span>
+      </a>
+      <div class="topo-acoes">
+        <button class="icone" id="botao-tema" type="button" aria-label="Trocar tema" title="Trocar tema">
+          <svg class="so-claro" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+          <svg class="so-escuro" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+        </button>
+        <button class="botao fantasma" id="botao-entrar" type="button">Entrar</button>
+        <div class="conta" id="conta" hidden>
+          <button class="botao fantasma" id="botao-conta" type="button" aria-haspopup="menu" aria-expanded="false"></button>
+          <div class="menu" id="menu-conta" role="menu" hidden>
+            <button type="button" role="menuitem" id="botao-sair">Sair</button>
+            <button type="button" role="menuitem" id="botao-excluir" class="perigo">Excluir minha conta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-dentro">
+      <h1>Vagas de TI de 4 portais, <span>num lugar só.</span></h1>
+      <p class="sub">Gupy, Sólides, Programathor e InfoJobs, atualizados todo dia. Filtre pelo seu nível e pelas tecnologias que você usa, e se candidate direto no anúncio original.</p>
+      <form class="busca" id="form-busca" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <label class="oculto" for="campo-busca">Buscar vagas</label>
+        <input id="campo-busca" type="search" placeholder="Cargo, empresa ou cidade" autocomplete="off" maxlength="80">
+        <button class="botao" type="submit">Buscar</button>
+      </form>
+      <p class="estatus" id="estatus" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <main class="principal">
+    <aside class="filtros" id="filtros" aria-label="Filtros">
+      <div class="filtros-topo">
+        <h2>Filtros</h2>
+        <button class="link" type="button" id="limpar">Limpar</button>
+        <button class="icone fechar-filtros" type="button" id="fechar-filtros" aria-label="Fechar filtros">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <fieldset>
+        <legend>Nível</legend>
+        <div class="chips" data-filtro="nivel">
+          <button type="button" data-valor="estagio">Estágio</button>
+          <button type="button" data-valor="junior">Júnior</button>
+          <button type="button" data-valor="pleno">Pleno</button>
+          <button type="button" data-valor="senior">Sênior</button>
+          <button type="button" data-valor="nao">Não informado</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Modalidade</legend>
+        <div class="chips" data-filtro="modalidade">
+          <button type="button" data-valor="remoto">Remoto</button>
+          <button type="button" data-valor="hibrido">Híbrido</button>
+          <button type="button" data-valor="presencial">Presencial</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><label for="campo-uf">Estado</label></legend>
+        <select id="campo-uf"><option value="">Todos os estados</option></select>
+        <label class="marcar"><input type="checkbox" id="campo-remoto" checked> Incluir vagas remotas</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Contrato</legend>
+        <div class="chips" data-filtro="contrato">
+          <button type="button" data-valor="CLT">CLT</button>
+          <button type="button" data-valor="PJ">PJ</button>
+          <button type="button" data-valor="outros">Outros</button>
+          <button type="button" data-valor="nao">Não informado</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Área</legend>
+        <div class="chips" data-filtro="area">
+          <button type="button" data-valor="Desenvolvimento">Desenvolvimento</button>
+          <button type="button" data-valor="Dados">Dados</button>
+          <button type="button" data-valor="QA e Testes">QA e Testes</button>
+          <button type="button" data-valor="Infra e DevOps">Infra e DevOps</button>
+          <button type="button" data-valor="Suporte">Suporte</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Suas tecnologias</legend>
+        <p class="ajuda">Marque o que você usa: cada vaga ganha uma nota de encaixe e as melhores sobem.</p>
+        <label class="oculto" for="campo-tec">Filtrar tecnologias</label>
+        <input id="campo-tec" type="search" placeholder="Procurar tecnologia" autocomplete="off">
+        <div class="chips tecs" id="lista-tecs"></div>
+        <button class="link" type="button" id="mais-tecs" hidden>Mostrar todas</button>
+      </fieldset>
+    </aside>
+    <div class="veu" id="veu" hidden></div>
+
+    <section class="resultados" id="resultados" aria-label="Vagas">
+      <div class="barra">
+        <nav class="abas" id="abas" aria-label="Listas" hidden>
+          <button type="button" data-aba="vagas" aria-current="true">Vagas</button>
+          <button type="button" data-aba="candidatei">Candidatei</button>
+          <button type="button" data-aba="descartada">Descartadas</button>
+        </nav>
+        <div class="barra-dir">
+          <button class="botao fantasma abrir-filtros" type="button" id="abrir-filtros">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            Filtros <span id="n-filtros"></span>
+          </button>
+          <label class="ordem">
+            <span>Ordenar</span>
+            <select id="campo-ordem">
+              <option value="encaixe">Melhor encaixe</option>
+              <option value="recentes">Mais recentes</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <p class="contagem" id="contagem" aria-live="polite"></p>
+      <ol class="lista" id="lista"></ol>
+      <div class="rodape-lista">
+        <button class="botao fantasma" type="button" id="carregar-mais" hidden>Carregar mais vagas</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape-dentro">
+      <p>Coleta diária automática. Cada vaga leva ao anúncio original, onde a candidatura acontece. Confira sempre os detalhes no portal.</p>
+      <p>Feito por <a href="https://andrssb.github.io" target="_blank" rel="noopener">Andres Barbosa</a> ·
+        <a href="https://github.com/andrssb/caca-vagas" target="_blank" rel="noopener">Código no GitHub</a> ·
+        <a href="https://www.linkedin.com/in/andres-barbosa-496088406" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="/privacidade.html">Privacidade</a></p>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="modal-conta" aria-labelledby="titulo-conta">
+    <form method="dialog" class="modal-fechar"><button class="icone" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></form>
+    <h2 id="titulo-conta">Entrar</h2>
+    <p class="modal-sub" id="sub-conta">Salve as vagas em que você se candidatou e as suas tecnologias.</p>
+    <div class="alternar" role="tablist">
+      <button type="button" role="tab" data-modo="entrar" aria-selected="true">Entrar</button>
+      <button type="button" role="tab" data-modo="cadastro" aria-selected="false">Criar conta</button>
+    </div>
+    <form id="form-conta" novalidate>
+      <label>E-mail<input type="email" id="conta-email" autocomplete="email" required maxlength="200"></label>
+      <label>Senha<input type="password" id="conta-senha" autocomplete="current-password" required minlength="8" maxlength="200"></label>
+      <p class="dica" id="dica-senha" hidden>Pelo menos 8 caracteres.</p>
+      <p class="erro" id="erro-conta" role="alert"></p>
+      <button class="botao largo" type="submit" id="enviar-conta">Entrar</button>
+      <p class="letra-miuda">Seu e-mail serve só para entrar. Sem newsletter e sem compartilhamento. <a href="/privacidade.html" target="_blank">Privacidade</a>.</p>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="modal-excluir" aria-labelledby="titulo-excluir">
+    <h2 id="titulo-excluir">Excluir conta</h2>
+    <p class="modal-sub">Apaga sua conta, suas tecnologias e todas as marcações. Não dá para desfazer.</p>
+    <form id="form-excluir">
+      <label>Confirme sua senha<input type="password" id="excluir-senha" autocomplete="current-password" required></label>
+      <p class="erro" id="erro-excluir" role="alert"></p>
+      <div class="linha-botoes">
+        <button class="botao fantasma" type="button" id="cancelar-excluir">Cancelar</button>
+        <button class="botao perigo" type="submit">Excluir de vez</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="modelo-vaga">
+    <li class="vaga">
+      <div class="vaga-topo">
+        <div class="vaga-texto">
+          <h3><a class="vaga-titulo" target="_blank" rel="noopener noreferrer"></a></h3>
+          <p class="vaga-empresa"></p>
+        </div>
+        <div class="nota" hidden><strong></strong><span>encaixe</span></div>
+      </div>
+      <ul class="selos"></ul>
+      <ul class="tecs-vaga"></ul>
+      <div class="vaga-rodape">
+        <p class="vaga-datas"></p>
+        <div class="vaga-acoes">
+          <button class="botao fantasma pequeno acao-descartar" type="button">Descartar</button>
+          <button class="botao fantasma pequeno acao-marcar" type="button">Já me candidatei</button>
+          <a class="botao pequeno acao-candidatar" target="_blank" rel="noopener noreferrer">Candidatar-se
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
+        </div>
+      </div>
+    </li>
+  </template>
+
+  <script src="/app.js?v=1" type="module"></script>
+</body>
+</html>

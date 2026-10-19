@@ -9,7 +9,7 @@ from ..modelo import Vaga, modalidade_do_texto
 URL = "https://vagas.solides.com.br/api/vacancies"
 # Acima de 14 por página a API responde "Failed to fetch vacancies".
 POR_PAGINA = 14
-MAX_PAGINAS = 6
+MAX_PAGINAS = 30
 
 
 def _data(iso: str | None) -> date | None:

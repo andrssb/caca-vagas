@@ -17,12 +17,16 @@ class Vaga:
     uf: str = ""
     modalidade: str = ""  # remoto | hibrido | presencial | "" (não informado)
     contrato: str = ""  # CLT, PJ, Estágio... ou "" (não informado)
-    senioridade: str = ""
+    senioridade: str = ""  # como o portal informa, quando informa
     descricao: str = ""
     tags: list[str] = field(default_factory=list)
     publicada_em: date | None = None
     prazo: date | None = None
     salario: str = ""
+    # Preenchidos pela classificação
+    niveis: list[str] = field(default_factory=list)  # estagio, junior, pleno, senior
+    area: str = ""
+    tecnologias: list[str] = field(default_factory=list)
 
     @property
     def chave(self) -> str:

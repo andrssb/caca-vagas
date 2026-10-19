@@ -9,7 +9,7 @@ from ..modelo import Vaga, modalidade_do_texto
 
 BASE = "https://programathor.com.br"
 URL = f"{BASE}/jobs"
-MAX_PAGINAS = 5
+MAX_PAGINAS = 30
 
 
 def _icone(card, classe: str) -> str:
@@ -51,16 +51,16 @@ def parse(html: str) -> list[Vaga]:
 
 
 def coletar(cliente: httpx.Client, termos: list[str]) -> list[Vaga]:
-    # O filtro de nível do próprio portal já traz só júnior; os termos não são usados aqui.
+    # O portal é só de TI, então a lista geral já serve; os termos não são usados aqui.
+    # As vagas ativas vêm primeiro: a primeira página só com "Vencida" encerra a leitura.
     vagas: list[Vaga] = []
     vistas: set[str] = set()
     for pagina in range(1, MAX_PAGINAS + 1):
-        resposta = cliente.get(URL, params={"expertise": "Júnior", "page": pagina})
+        resposta = cliente.get(URL if pagina == 1 else f"{URL}/page/{pagina}")
         resposta.raise_for_status()
-        # O fim da paginação é a página que só repete cards (vencidos inclusive).
-        ids_da_pagina = set(re.findall(r'href="/jobs/(\d+)', resposta.text))
-        if not ids_da_pagina - vistas:
+        ativas = [v for v in parse(resposta.text) if v.id_externo not in vistas]
+        if not ativas:
             break
-        vagas.extend(v for v in parse(resposta.text) if v.id_externo not in vistas)
-        vistas |= ids_da_pagina
+        vistas.update(v.id_externo for v in ativas)
+        vagas.extend(ativas)
     return vagas

@@ -1,0 +1,16 @@
+{
+  "name": "caca-vagas-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy",
+    "tipos": "tsc --noEmit",
+    "banco:criar": "wrangler d1 execute caca-vagas --remote --file schema.sql"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261010.1",
+    "typescript": "7.0.2",
+    "wrangler": "4.149.0"
+  }
+}

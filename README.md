@@ -1,80 +1,59 @@
 # Caça Vagas
 
-Coleta vagas de TI júnior em vários portais, filtra pelo meu perfil e ranqueia pelo encaixe com o meu currículo. A candidatura continua sendo feita por mim, na página da vaga: o sistema resolve a parte cansativa, que é procurar, comparar e lembrar o que já foi visto.
+Vagas de TI de Gupy, Sólides, Programathor e InfoJobs num lugar só, atualizadas todo dia. Qualquer pessoa filtra por nível, modalidade, estado, contrato e área, marca as tecnologias que usa e recebe uma nota de encaixe para cada vaga. Com uma conta (opcional), salva as vagas em que se candidatou. A candidatura acontece sempre no anúncio original.
 
 ```
-coletar (4 portais)  ->  normalizar  ->  filtrar  ->  pontuar  ->  SQLite  ->  painel local
+GitHub Actions (todo dia, 7h)                    Cloudflare
+┌──────────────────────────────┐       ┌───────────────────────────────┐
+│ Python: coleta nos 4 portais │  SQL  │ D1 (SQLite)                   │
+│ classifica nível, área,      │ ────> │ Worker: API de vagas, contas, │
+│ local e tecnologias          │       │ sessões e marcações           │
+└──────────────────────────────┘       │ Página estática (HTML/CSS/JS) │
+                                       └───────────────────────────────┘
 ```
 
-## Portais
+## Coleta (`caca_vagas/`, Python)
 
 | Portal | Como é lido |
 | --- | --- |
-| Gupy | API JSON pública da busca do portal (traz contrato, modalidade e prazo de inscrição) |
-| Sólides Vagas | API JSON pública do portal (traz senioridade, contrato e habilidades pedidas) |
-| Programathor | HTML da lista de vagas júnior (vagas "Vencida" são descartadas) |
+| Gupy | API JSON pública da busca do portal (contrato, modalidade e prazo de inscrição) |
+| Sólides Vagas | API JSON pública do portal (senioridade, contrato e habilidades pedidas) |
+| Programathor | HTML das páginas de vagas; a leitura para na primeira página só com vagas "Vencida" |
 | InfoJobs | HTML da busca por palavra-chave (contrato deduzido do título e do resumo) |
 
-Cada portal vira o mesmo formato (`Vaga`, em `caca_vagas/modelo.py`). As requisições são sequenciais, com pausa entre elas, no ritmo de uma pessoa navegando. Se um portal falhar, os outros continuam.
+- Cada portal vira o mesmo formato (`Vaga`, em `modelo.py`). As requisições são sequenciais, com pausa entre elas, no ritmo de uma pessoa navegando.
+- `classificar.py` decide a **área** pelo título (Desenvolvimento, Dados, QA e Testes, Infra e DevOps, Suporte), os **níveis** (estágio a sênior; "Jr/Pl" fica nos dois; "PL/SQL" não é pleno), as **tecnologias** citadas (Java não casa com JavaScript, React não casa com React Native) e recusa o que nunca interessa: vaga fora de TI, programa de aprendiz e vaga encerrada.
+- `localidade.py` transforma "São Paulo, São Paulo, Brasil", "Mato Grosso - Cuiabá" e "Belo Horizonte/MG" em cidade e UF.
+- `coleta.py` gera o SQL de atualização. Uma vaga só sai do ar quando a fonte dela funcionou e deixou de mostrá-la: um portal fora do ar num dia não apaga as vagas dele.
+- Indeed e Glassdoor ficaram de fora porque bloqueiam leitura automatizada. O site mostra só o resumo da vaga e leva ao anúncio original; o texto do anúncio não é republicado.
 
-Indeed e Glassdoor ficaram de fora: os dois bloqueiam leitura automatizada.
+## Site (`web/`, Cloudflare Workers + D1)
 
-## Filtro
+- **Busca:** filtros combináveis na URL (dá para compartilhar o link de uma busca). A nota de encaixe é a parte das tecnologias pedidas pela vaga que a pessoa marcou.
+- **Contas:** senha com PBKDF2-SHA256 e sal; sessão em cookie HttpOnly, Secure e SameSite=Lax, com só o hash do token no banco; comparação de hash em tempo constante; limite de tentativas por IP; escrita aceita só com Origin do próprio site e corpo JSON; exclusão de conta pelo próprio usuário (LGPD).
+- **Página:** HTML, CSS e JavaScript sem framework. Tema claro e escuro (segue o sistema até a pessoa escolher), layout de celular com filtros em gaveta e CSP restrita. Todo dado de vaga entra na página como texto, nunca como HTML.
 
-Tudo é configurado em `perfil.toml`:
-
-- **Área:** o título precisa ser de desenvolvimento, sistemas ou dados.
-- **Nível:** recusa pleno, sênior, especialista, estágio e aprendiz. "Júnior/Pleno" passa, porque o júnior explícito vence. "PL/SQL" não é confundido com pleno.
-- **Local:** remoto de qualquer lugar; presencial ou híbrido só em BH e região metropolitana.
-- **Contrato:** CLT ou PJ (CLT ganha bônus na nota). Vaga sem contrato informado passa com aviso.
-- **Data:** o prazo de inscrição, quando existe, vale mais que a data de publicação.
-- **Vaga afirmativa:** não é recusada, mas aparece com aviso para conferir o público.
-
-Toda recusa tem motivo, e o resumo da coleta mostra quantas vagas caíram em cada um.
-
-## Nota de encaixe (0 a 100)
-
-- até 60 pontos pelas habilidades do perfil citadas na vaga, com pesos e sinônimos (`node.js|nodejs|node`). O painel mostra com quais habilidades a vaga bate, o que ajuda a ajustar o currículo para cada candidatura;
-- +15 se o título diz júnior;
-- +10 se o contrato CLT é confirmado;
-- +8 se o local é remoto ou em BH;
-- +7 se a vaga foi publicada nos últimos 3 dias (+4 até 7 dias).
-
-## Uso
+## Rodando
 
 ```bash
+# coleta
 python -m venv .venv
 .venv\Scripts\activate
 pip install -e ".[dev]"
+pytest
+python -m caca_vagas coletar --saida vagas.sql
 
-python -m caca_vagas coletar            # todos os portais
-python -m caca_vagas coletar --fontes gupy,solides
-python -m caca_vagas listar --top 20    # as melhores no terminal
-python -m caca_vagas painel             # http://127.0.0.1:8000
+# site
+cd web
+npm install
+npx wrangler d1 execute caca-vagas --local --file schema.sql
+npx wrangler d1 execute caca-vagas --local --file ../vagas.sql
+npx wrangler dev
 ```
 
-Para coletar todo dia sozinho, o `coletar-diario.bat` pode ser agendado no Agendador de Tarefas do Windows. A saída de cada coleta fica em `dados/coleta.log`.
-
-No painel, o título abre a vaga no portal. Depois de se candidatar, o botão **Candidatei** tira a vaga da lista; **Descartar** tira sem candidatura. Coletar de novo nunca apaga esse status, então uma vaga descartada não volta como nova.
+Publicação: `npx wrangler deploy` em `web/`. A coleta diária roda em `.github/workflows/coleta.yml` e precisa dos segredos `CLOUDFLARE_API_TOKEN` (permissão de edição no D1) e `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Testes
 
-```bash
-pytest
-```
-
-Os testes de parse rodam sobre respostas reais gravadas em `tests/amostras`, sem rede. Os de filtro e nota cobrem os casos que já deram problema: Java contra JavaScript, PL/SQL, "Júnior / Estagiário", prazo contra data de publicação.
-
-## Estrutura
-
-```
-caca_vagas/
-  fontes/        um módulo por portal: coletar() com rede e parse() puro
-  modelo.py      formato comum da vaga e normalização de texto
-  filtros.py     aceita ou recusa, sempre com motivo
-  ranking.py     nota de encaixe
-  banco.py       SQLite com histórico e status
-  coleta.py      orquestra fontes, filtro, nota e banco
-  painel.py      painel local em FastAPI
-perfil.toml      termos de busca, filtros e habilidades com peso
-```
+- `pytest`: parse de cada portal sobre respostas reais gravadas em `tests/amostras` (sem rede), classificação e o SQL gerado, executado contra o mesmo `schema.sql` do site.
+- `npx tsc --noEmit` em `web/`.
