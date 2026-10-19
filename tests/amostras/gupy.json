@@ -1,0 +1,69 @@
+{
+ "data": [
+  {
+   "id": 12542291,
+   "name": "Desenvolvedor(a) Operações Júnior (remoto)",
+   "applicationDeadline": "2026-10-22T00:00:00.000Z",
+   "description": "\nBuscamos um(a) Desenvolvedor(a) Operações Junior de Software, que irá atuar em nossas squads dedicadas e/ou compartilhadas, sendo responsável por garantir entregas de valor através do potencial de nossas plataformas.Aqui você encontrará um ambiente dinâmico de muito aprendizado, colaboração e uma galera incrível. Vem com a gente!Responsabilidades e atribuiçõesSeus desafios para fazer a diferença ",
+   "careerPageName": "Zenvia Jobs",
+   "careerPageLogo": "https://attachments.gupy.io/production/companies/90952/career/237643/images/2026-03-10_19-12_companyLogoUrl.jpg",
+   "careerPageUrl": "",
+   "type": "vacancy_type_effective",
+   "publishedDate": "2026-10-15T20:48:51.813Z",
+   "workplaceType": "remote",
+   "city": "",
+   "state": "",
+   "jobUrl": "https://zenvia.gupy.io/job/eyJqb2JJZCI6MTI1NDIyOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+   "badges": {
+    "friendlyBadge": true,
+    "isPWD": true
+   },
+   "disabilities": true
+  },
+  {
+   "id": 12709235,
+   "name": "Desenvolvedor(a) SQL Server Júnior - Exclusiva São Paulo",
+   "applicationDeadline": "2026-11-16T00:00:00.000Z",
+   "description": "Você fará parte de um time de desenvolvedores extremamente qualificado fortemente orientado a resultados.Você será parte vital no desenvolvimento e manutenção de nossos softwares.Somos especialistas em softwares voltados ao mercado segurador. Estamos ajudando a impulsionar a transformação no setor de seguros no Brasil. Estamos presentes em São Paulo e Rio de Janeiro, duas das principais capitais d",
+   "careerPageName": "Confitec",
+   "careerPageLogo": "https://attachments.gupy.io/production/companies/388/career/357/images/2023-02-13_15-59_companyLogoUrl.png",
+   "careerPageUrl": "",
+   "type": "vacancy_type_effective",
+   "publishedDate": "2026-10-15T18:18:58.224Z",
+   "workplaceType": "hybrid",
+   "city": "São Paulo",
+   "state": "São Paulo",
+   "jobUrl": "https://confitec.gupy.io/job/eyJqb2JJZCI6MTI3MDkyMzUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+   "badges": {
+    "friendlyBadge": true,
+    "isPWD": false
+   },
+   "disabilities": false
+  },
+  {
+   "id": 12729775,
+   "name": "Desenvolvedor Júnior",
+   "applicationDeadline": "2026-10-28T00:00:00.000Z",
+   "description": "Somos uma 4PL de nova geração. Reunimos importação, armazenagem, transporte, tecnologia e consultoria em uma solução única, que une o físico ao digital e aproxima o presente do futuro. Mais do que operar, inspiramos conexões que fazem sua empresa crescer de forma inteligente e sustentável.Buscamos um(a) Desenvolvedor(a) Júnior para desenvolver, manter e aprimorar aplicações, sistemas e automações,",
+   "careerPageName": "Vendemmia Logística Integrada",
+   "careerPageLogo": "https://attachments.gupy.io/production/companies/86398/career/222001/images/2025-08-26_18-57_companyLogoUrl.jpg",
+   "careerPageUrl": "",
+   "type": "vacancy_type_effective",
+   "publishedDate": "2026-10-15T13:18:20.136Z",
+   "workplaceType": "hybrid",
+   "city": "São Paulo",
+   "state": "São Paulo",
+   "jobUrl": "https://vendemmia.gupy.io/job/eyJqb2JJZCI6MTI3Mjk3NzUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+   "badges": {
+    "friendlyBadge": true,
+    "isPWD": true
+   },
+   "disabilities": true
+  }
+ ],
+ "pagination": {
+  "total": 13,
+  "limit": 3,
+  "offset": 0
+ }
+}

@@ -1,0 +1,553 @@
+{
+ "totalPages": 14,
+ "currentPage": 1,
+ "count": 41,
+ "data": [
+  {
+   "killerQuestions": [],
+   "id": 937983,
+   "title": "Desenvolvedor Junior ",
+   "description": "<div>Estamos em busca de um(a) profissional comprometido(a), com perfil analítico e paixão por tecnologia, para integrar nossa equipe. Se você possui experiência em desenvolvimento de sistemas e deseja atuar em projetos desafiadores, queremos conhecer você.</div>\n<div> </div>\n<div><strong>Conhecimentos específicos: </strong></div>\n<div> </div>\n<div>Experiência com desenvolvimento de aplicações web",
+   "currentState": "em_andamento",
+   "referenceId": 89656,
+   "companyName": "SKILLCONSULTING, TECNOLOGIA E INFORMATICA LTDA",
+   "companyLogo": "https://c5gwmsmjx1.execute-api.us-east-1.amazonaws.com/prod/empresa/logo/89656/logo_Skill_com_slogan-02.png",
+   "state": {
+    "id": 20,
+    "name": "São Paulo",
+    "code": "SP"
+   },
+   "city": {
+    "id": 3830,
+    "name": "São Paulo",
+    "stateId": 20
+   },
+   "slug": "gruposkill",
+   "redirectLink": "https://gruposkill./vacancies/937983?origem=portal",
+   "type": "externa",
+   "isHiddenJob": false,
+   "homeOffice": false,
+   "jobType": "presencial",
+   "openPositions": 1,
+   "salary": {
+    "type": "range",
+    "showRangeToApplicant": true,
+    "initialRange": 3100,
+    "finalRange": 4100,
+    "negotiable": false
+   },
+   "phases": [
+    {
+     "id": 4376894,
+     "name": "ANÁLISE DE CURRÍCULO",
+     "type": "fase_1",
+     "index": 0,
+     "show": true,
+     "description": null
+    },
+    {
+     "id": 4376895,
+     "name": "ANÁLISE COMPORTAMENTAL",
+     "type": "fase_2",
+     "index": 1,
+     "show": true,
+     "description": null
+    },
+    {
+     "id": 4376897,
+     "name": "PROVAS",
+     "type": "fase_4",
+     "index": 2,
+     "show": true,
+     "description": null
+    },
+    {
+     "id": 4376898,
+     "name": "TESTES ",
+     "type": "customizado",
+     "index": 3,
+     "show": true,
+     "description": ""
+    },
+    {
+     "id": 4376899,
+     "name": "ENTREVISTA COM RH",
+     "type": "customizado",
+     "index": 4,
+     "show": true,
+     "description": ""
+    },
+    {
+     "id": 4376900,
+     "name": "ENTREVISTA COM GESTÃO ",
+     "type": "customizado",
+     "index": 5,
+     "show": true,
+     "description": ""
+    },
+    {
+     "id": 4376896,
+     "name": "PRÉ-ADMISSÃO",
+     "type": "pre_admissao",
+     "index": 6,
+     "show": true,
+     "description": null
+    }
+   ],
+   "hasSpecialNeeds": false,
+   "peopleWithDisabilities": false,
+   "disabilityType": null,
+   "pcdOnly": false,
+   "videoUrl": null,
+   "seniority": [
+    {
+     "id": 4,
+     "name": "Junior",
+     "level": null
+    }
+   ],
+   "recruitmentContractType": [
+    {
+     "id": 10,
+     "name": "CLT",
+     "level": null
+    }
+   ],
+   "benefits": [
+    {
+     "id": 115737,
+     "name": "Vale transporte",
+     "level": null
+    },
+    {
+     "id": 115740,
+     "name": "Vale alimentação",
+     "level": null
+    },
+    {
+     "id": 115741,
+     "name": "Assistência médica",
+     "level": null
+    },
+    {
+     "id": 115738,
+     "name": "Vale refeição",
+     "level": null
+    },
+    {
+     "id": 115743,
+     "name": "Seguro de vida",
+     "level": null
+    },
+    {
+     "id": 115744,
+     "name": "Day off de aniversário",
+     "level": null
+    },
+    {
+     "id": 301308,
+     "name": "Assistência médica",
+     "level": null
+    },
+    {
+     "id": 301332,
+     "name": "Refeitório",
+     "level": null
+    },
+    {
+     "id": 829908,
+     "name": "Espaço de descompressão",
+     "level": null
+    },
+    {
+     "id": 115742,
+     "name": "Assistência odontológica",
+     "level": null
+    },
+    {
+     "id": 1788998,
+     "name": "Totalpass.",
+     "level": null
+    },
+    {
+     "id": 1059537,
+     "name": "Convênio Pet",
+     "level": null
+    },
+    {
+     "id": 1788995,
+     "name": "Quick Massage ",
+     "level": null
+    },
+    {
+     "id": 1788993,
+     "name": "Frutas.",
+     "level": null
+    }
+   ],
+   "language": [],
+   "hardSkills": [],
+   "education": [
+    {
+     "id": 45,
+     "name": "Graduação",
+     "level": null
+    },
+    {
+     "id": 46,
+     "name": "Tecnólogo",
+     "level": null
+    }
+   ],
+   "createdAt": "2026-10-14",
+   "availablePositions": 1,
+   "affirmative": [],
+   "occupationAreas": [
+    {
+     "id": 349584,
+     "name": "Tecnologia",
+     "level": null
+    }
+   ],
+   "isGoogleForJobsEnabled": true,
+   "requiredFields": [
+    "professionalExperiences",
+    "academicEducations",
+    "about_me"
+   ],
+   "receivingResume": true,
+   "showSkillsLevel": true,
+   "showModality": true,
+   "shift": [
+    {
+     "id": 42,
+     "name": "Integral",
+     "level": null
+    }
+   ],
+   "date": {
+    "due": "2026-11-30",
+    "show": false
+   },
+   "preApplyEnabled": false,
+   "startSolidesEnabled": true,
+   "publishers": null,
+   "isDisabled": false
+  },
+  {
+   "killerQuestions": [],
+   "id": 936561,
+   "title": "Assistente de Programação ",
+   "description": "<h2>Vaga: Assistente de Programação</h2>\n<h3>Descrição:</h3>\n<p>Estamos em busca de um Assistente de Programação para integrar nossa equipe de desenvolvimento. O profissional será responsável por auxiliar no desenvolvimento, manutenção e documentação de sistemas, seguindo as diretrizes e padrões estabelecidos pela empresa.</p>\n<h3>Responsabilidades:</h3>\n<ul>\n<li>Auxiliar no desenvolvimento de nov",
+   "currentState": "em_andamento",
+   "referenceId": 171730,
+   "companyName": "JOMED TRANSPORTES E LOGISTICA S/A",
+   "companyLogo": "https://c5gwmsmjx1.execute-api.us-east-1.amazonaws.com/prod/dados_processo_seletivo/logo_empresa/179658/logo (1).png",
+   "state": {
+    "id": 20,
+    "name": "São Paulo",
+    "code": "SP"
+   },
+   "city": {
+    "id": 3480,
+    "name": "Guarulhos",
+    "stateId": 20
+   },
+   "slug": "oportunidadesjomed",
+   "redirectLink": "https://oportunidadesjomed./vacancies/936561?origem=portal",
+   "type": "externa",
+   "isHiddenJob": false,
+   "homeOffice": false,
+   "jobType": "presencial",
+   "openPositions": 1,
+   "salary": {
+    "type": "simple",
+    "showRangeToApplicant": true,
+    "initialRange": 0,
+    "finalRange": 0,
+    "negotiable": false
+   },
+   "phases": [
+    {
+     "id": 4370740,
+     "name": "ANÁLISE DE CURRÍCULO",
+     "type": "fase_1",
+     "index": 0,
+     "show": true,
+     "description": null
+    },
+    {
+     "id": 4370741,
+     "name": "ANÁLISE COMPORTAMENTAL",
+     "type": "fase_2",
+     "index": 1,
+     "show": true,
+     "description": null
+    },
+    {
+     "id": 4370742,
+     "name": "PRÉ-ADMISSÃO",
+     "type": "pre_admissao",
+     "index": 2,
+     "show": true,
+     "description": null
+    }
+   ],
+   "hasSpecialNeeds": false,
+   "peopleWithDisabilities": false,
+   "disabilityType": null,
+   "pcdOnly": false,
+   "videoUrl": null,
+   "seniority": [],
+   "recruitmentContractType": [
+    {
+     "id": 10,
+     "name": "CLT",
+     "level": null
+    }
+   ],
+   "benefits": [
+    {
+     "id": 301184,
+     "name": "Adiantamento de salário",
+     "level": null
+    },
+    {
+     "id": 301308,
+     "name": "Assistência médica",
+     "level": null
+    },
+    {
+     "id": 301309,
+     "name": "Assistência odontológica",
+     "level": null
+    },
+    {
+     "id": 301317,
+     "name": "Cafe da manhã",
+     "level": null
+    },
+    {
+     "id": 301323,
+     "name": "Convênio com Farmácia",
+     "level": null
+    },
+    {
+     "id": 301325,
+     "name": "Estacionamento",
+     "level": null
+    },
+    {
+     "id": 301328,
+     "name": "Plano de carreira",
+     "level": null
+    },
+    {
+     "id": 301334,
+     "name": "Vale alimentação",
+     "level": null
+    },
+    {
+     "id": 301335,
+     "name": "Vale combustível",
+     "level": null
+    },
+    {
+     "id": 301337,
+     "name": "Vale refeição",
+     "level": null
+    },
+    {
+     "id": 301338,
+     "name": "Vale transporte",
+     "level": null
+    },
+    {
+     "id": 301329,
+     "name": "PLR",
+     "level": null
+    }
+   ],
+   "language": [],
+   "hardSkills": [],
+   "education": [],
+   "createdAt": "2026-10-13",
+   "availablePositions": 1,
+   "affirmative": [],
+   "occupationAreas": [
+    {
+     "id": 349581,
+     "name": "Administrativo",
+     "level": null
+    },
+    {
+     "id": 349586,
+     "name": "Logística",
+     "level": null
+    }
+   ],
+   "isGoogleForJobsEnabled": false,
+   "requiredFields": [],
+   "receivingResume": true,
+   "showSkillsLevel": true,
+   "showModality": true,
+   "shift": [
+    {
+     "id": 42,
+     "name": "Integral",
+     "level": null
+    }
+   ],
+   "date": {
+    "due": "2026-10-19",
+    "show": false
+   },
+   "preApplyEnabled": false,
+   "startSolidesEnabled": false,
+   "publishers": null,
+   "isDisabled": false
+  },
+  {
+   "killerQuestions": [],
+   "id": 934287,
+   "title": "Auxiliar Tecnico Backbone",
+   "description": "<h2>Descrição da Vaga: Auxiliar Técnico Backbone</h2>\n<p><strong>Responsabilidades:</strong></p>\n<ul>\n<li>Realizar suporte técnico em projetos utilizando Backbone.js</li>\n<li>Participar do desenvolvimento e manutenção de aplicações web</li>\n<li>Identificar e resolver problemas relacionados à estrutura do Backbone</li>\n<li>Colaborar com a equipe de desenvolvimento para implementar soluções eficient",
+   "currentState": "em_andamento",
+   "referenceId": 107507,
+   "companyName": "INFOSERVIC PROVEDOR DE INTERNET LTDA",
+   "companyLogo": "https://c5gwmsmjx1.execute-api.us-east-1.amazonaws.com/prod/empresa/logo/107507/WhatsApp_Image_2023-04-22_at_15.21.48.jpeg",
+   "state": {
+    "id": 25,
+    "name": "Mato Grosso",
+    "code": "MT"
+   },
+   "city": {
+    "id": 5220,
+    "name": "Cuiabá",
+    "stateId": 25
+   },
+   "slug": "infoservic",
+   "redirectLink": "https://infoservic./vacancies/934287?origem=portal",
+   "type": "mista",
+   "isHiddenJob": false,
+   "homeOffice": false,
+   "jobType": "presencial",
+   "openPositions": 1,
+   "salary": {
+    "type": "simple",
+    "showRangeToApplicant": true,
+    "initialRange": 0,
+    "finalRange": 3200,
+    "negotiable": false
+   },
+   "phases": [
+    {
+     "id": 4360961,
+     "name": "ANÁLISE DE CURRÍCULO",
+     "type": "fase_1",
+     "index": 0,
+     "show": true,
+     "description": null
+    },
+    {
+     "id": 4360962,
+     "name": "ANÁLISE COMPORTAMENTAL",
+     "type": "fase_2",
+     "index": 1,
+     "show": true,
+     "description": null
+    },
+    {
+     "id": 4360963,
+     "name": "PRÉ-ADMISSÃO",
+     "type": "pre_admissao",
+     "index": 2,
+     "show": true,
+     "description": null
+    }
+   ],
+   "hasSpecialNeeds": false,
+   "peopleWithDisabilities": false,
+   "disabilityType": null,
+   "pcdOnly": false,
+   "videoUrl": null,
+   "seniority": [],
+   "recruitmentContractType": [
+    {
+     "id": 10,
+     "name": "CLT",
+     "level": null
+    }
+   ],
+   "benefits": [
+    {
+     "id": 301328,
+     "name": "Plano de carreira",
+     "level": null
+    },
+    {
+     "id": 301333,
+     "name": "Seguro de vida",
+     "level": null
+    },
+    {
+     "id": 301334,
+     "name": "Vale alimentação",
+     "level": null
+    }
+   ],
+   "language": [],
+   "hardSkills": [],
+   "education": [
+    {
+     "id": 44,
+     "name": "Ensino Médio",
+     "level": null
+    },
+    {
+     "id": 429327,
+     "name": "Ensino Técnico",
+     "level": null
+    }
+   ],
+   "createdAt": "2026-10-06",
+   "availablePositions": 1,
+   "affirmative": [],
+   "occupationAreas": [
+    {
+     "id": 349584,
+     "name": "Tecnologia",
+     "level": null
+    }
+   ],
+   "isGoogleForJobsEnabled": true,
+   "requiredFields": [
+    "drivers_license_category",
+    "about_me",
+    "salary",
+    "address",
+    "street",
+    "district",
+    "city"
+   ],
+   "receivingResume": true,
+   "showSkillsLevel": true,
+   "showModality": true,
+   "shift": [
+    {
+     "id": 42,
+     "name": "Integral",
+     "level": null
+    }
+   ],
+   "date": {
+    "due": "2026-10-31",
+    "show": false
+   },
+   "preApplyEnabled": false,
+   "startSolidesEnabled": false,
+   "publishers": null,
+   "isDisabled": false
+  }
+ ]
+}
