@@ -51,7 +51,7 @@ npx wrangler d1 execute caca-vagas --local --file ../vagas.sql
 npx wrangler dev
 ```
 
-Publicação: `npx wrangler deploy` em `web/`. A coleta diária roda em `.github/workflows/coleta.yml` e precisa dos segredos `CLOUDFLARE_API_TOKEN` (permissão de edição no D1) e `CLOUDFLARE_ACCOUNT_ID`, e da variável `COLETA_ATIVA=true`. Sem ela, `coletar-diario.bat` faz o mesmo pelo Agendador de Tarefas do Windows.
+Publicação: `npx wrangler pages deploy --branch main` em `web/`. A coleta diária de Gupy, Sólides e InfoJobs roda em `.github/workflows/coleta.yml` (segredos `CLOUDFLARE_API_TOKEN` com edição no D1 e `CLOUDFLARE_ACCOUNT_ID`, variável `COLETA_ATIVA=true`). O Programathor bloqueia os IPs do GitHub, então é coletado por `coletar-diario.bat` no Agendador de Tarefas do Windows. Vaga que nenhuma coleta encontra há 7 dias sai do ar.
 
 ## Testes
 

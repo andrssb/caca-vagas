@@ -59,6 +59,19 @@ def test_vaga_que_volta_e_reativada():
     assert conexao.execute("SELECT ativa FROM vagas").fetchone()[0] == 1
 
 
+def test_vaga_sem_ser_vista_ha_uma_semana_sai_do_ar_mesmo_com_a_fonte_falhando():
+    conexao = banco()
+    antes = Resumo(vagas=[vaga("1", "programathor")])
+    antes.coletadas["programathor"] = 1
+    conexao.executescript(sql_de(antes, date(2026, 10, 10)))
+
+    hoje = Resumo(vagas=[])
+    hoje.coletadas["programathor"] = 0
+    hoje.erros["programathor"] = "HTTPStatusError: 403"
+    conexao.executescript(sql_de(hoje, HOJE))
+    assert conexao.execute("SELECT ativa FROM vagas").fetchone()[0] == 0
+
+
 def test_sem_repetidas_entre_termos_e_portais():
     vagas = [
         vaga("1", "gupy"),

@@ -8,7 +8,7 @@ import json
 import time
 from collections import Counter
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, timedelta
 
 import httpx
 
@@ -34,6 +34,9 @@ TERMOS = [
     "analista de suporte",
     "estágio ti",
 ]
+
+# Vaga que nenhuma coleta encontra há esse tempo sai do ar, mesmo que a fonte dela esteja falhando.
+DIAS_SEM_VER = 7
 
 # Ritmo de uma pessoa navegando: uma requisição por vez, com pausa entre elas.
 PAUSA_SEGUNDOS = 1.5
@@ -145,6 +148,8 @@ def sql_de(resumo: Resumo, hoje: date | None = None) -> str:
     if resumo.fontes_ok:
         fontes = ", ".join(_literal(f) for f in resumo.fontes_ok)
         linhas.append(f"UPDATE vagas SET ativa = 0 WHERE fonte IN ({fontes}) AND visto_em < {_literal(hoje.isoformat())};")
+    limite = (hoje - timedelta(days=DIAS_SEM_VER)).isoformat()
+    linhas.append(f"UPDATE vagas SET ativa = 0 WHERE visto_em < {_literal(limite)};")
     linhas.append(
         f"INSERT INTO coletas (em, vagas, fontes_ok, erros) VALUES "
         f"({_literal(hoje.isoformat())}, {len(resumo.vagas)}, {_literal(','.join(resumo.fontes_ok))}, "

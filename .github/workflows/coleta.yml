@@ -22,7 +22,8 @@ jobs:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
       - run: pytest -q
-      - run: python -m caca_vagas coletar --saida vagas.sql
+      # O Programathor bloqueia os IPs do GitHub (403); ele é coletado pelo coletar-diario.bat.
+      - run: python -m caca_vagas coletar --fontes gupy,solides,infojobs --saida vagas.sql
       - name: Publicar no D1
         working-directory: web
         env:
