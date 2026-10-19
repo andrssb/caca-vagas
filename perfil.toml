@@ -17,7 +17,7 @@ dias = 30
 
 [filtro]
 # Contratos aceitos. Vaga sem contrato informado passa e aparece como "não informado".
-contratos = ["CLT"]
+contratos = ["CLT", "PJ"]
 # Presencial ou híbrido só nestas cidades. Remoto passa de qualquer lugar.
 cidades = ["Belo Horizonte", "Contagem", "Betim", "Nova Lima", "Sabará", "Santa Luzia", "Vespasiano", "Lagoa Santa", "Ribeirão das Neves", "Ibirité", "São José da Lapa", "Pedro Leopoldo", "Confins", "Sarzedo", "Igarapé", "Brumadinho", "Esmeraldas", "Caeté", "Raposos", "Rio Acima", "Matozinhos", "Mário Campos", "Juatuba", "Mateus Leme"]
 # O título precisa ter um destes termos para contar como vaga de TI.

@@ -65,7 +65,8 @@ def test_vaga_afirmativa_passa_com_aviso(perfil):
 
 
 def test_contrato(perfil):
-    assert motivo(vaga(contrato="PJ"), perfil) == "contrato PJ"
+    assert motivo(vaga(contrato="Cooperado"), perfil) == "contrato Cooperado"
+    assert filtros.avaliar(vaga(contrato="PJ"), perfil, HOJE).aceita
     assert filtros.avaliar(vaga(contrato="CLT / PJ"), perfil, HOJE).aceita
     assert "contrato não informado" in filtros.avaliar(vaga(contrato=""), perfil, HOJE).avisos
 

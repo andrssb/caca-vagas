@@ -26,7 +26,7 @@ Tudo é configurado em `perfil.toml`:
 - **Área:** o título precisa ser de desenvolvimento, sistemas ou dados.
 - **Nível:** recusa pleno, sênior, especialista, estágio e aprendiz. "Júnior/Pleno" passa, porque o júnior explícito vence. "PL/SQL" não é confundido com pleno.
 - **Local:** remoto de qualquer lugar; presencial ou híbrido só em BH e região metropolitana.
-- **Contrato:** só CLT. Vaga sem contrato informado passa com aviso.
+- **Contrato:** CLT ou PJ (CLT ganha bônus na nota). Vaga sem contrato informado passa com aviso.
 - **Data:** o prazo de inscrição, quando existe, vale mais que a data de publicação.
 - **Vaga afirmativa:** não é recusada, mas aparece com aviso para conferir o público.
 
@@ -52,6 +52,8 @@ python -m caca_vagas coletar --fontes gupy,solides
 python -m caca_vagas listar --top 20    # as melhores no terminal
 python -m caca_vagas painel             # http://127.0.0.1:8000
 ```
+
+Para coletar todo dia sozinho, o `coletar-diario.bat` pode ser agendado no Agendador de Tarefas do Windows. A saída de cada coleta fica em `dados/coleta.log`.
 
 No painel, o título abre a vaga no portal. Depois de se candidatar, o botão **Candidatei** tira a vaga da lista; **Descartar** tira sem candidatura. Coletar de novo nunca apaga esse status, então uma vaga descartada não volta como nova.
 
