@@ -75,6 +75,19 @@ def test_classificar_preenche_campos():
     assert (v.cidade, v.uf) == ("Belo Horizonte", "MG")
 
 
+@pytest.mark.parametrize("titulo,empresa,url", [
+    ("[Modelo] - Pessoa Desenvolvedora Fullstack - TESTE CONVOCAÇÂO", "VAGAS TESTES BONDY", "https://bondy-demo.gupy.io/job/x"),
+    ("Analista De Suporte Atendimento Logístico I", "VAGAS TESTES BONDY", "https://bondy-demo.gupy.io/job/y"),
+])
+def test_vaga_de_teste_do_portal_e_recusada(titulo, empresa, url):
+    assert not classificar(vaga(titulo=titulo, empresa=empresa, url=url), HOJE).aceita
+
+
+def test_testes_no_titulo_nao_e_vaga_de_teste():
+    v = vaga(titulo="Analista de Testes de Intrusão (Pentest)", empresa="Logiks", url="https://vagas.solides.com.br/vaga/a")
+    assert classificar(v, HOJE).aceita
+
+
 def test_java_e_javascript_sao_diferentes():
     v = vaga(descricao="Experiência com JavaScript.")
     classificar(v, HOJE)

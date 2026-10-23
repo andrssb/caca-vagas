@@ -28,6 +28,9 @@ _AREAS = [(nome, re.compile(padrao)) for nome, padrao in AREAS]
 # Títulos com "programação" ou "desenvolvedor" que não são de TI.
 NAO_TI = re.compile(r"\bpcp\b|programac?ao de (producao|materiais)|programador (de producao|cnc|de maquinas)|\bcnc\b|usinagem|desenvolvedor (de negocios|comercial)|desenvolvimento (de negocios|humano|organizacional)|business development|suporte ao paciente|suporte administrativo|predial|\bplc\b|\bclp\b|automacao industrial|\bmarketing\b")
 APRENDIZ = re.compile(r"\baprendiz\b|jovem aprendiz")
+# Vagas de teste dos próprios portais (ex.: bondy-demo.gupy.io, empresa "VAGAS TESTES BONDY").
+DEMO_URL = re.compile(r"https?://[^/]*\b(demo|teste|sandbox)\b[^/]*/", re.I)
+DEMO_TEXTO = re.compile(r"\bvagas? (de )?testes?\b|^\[modelo\]|\bteste convocacao\b")
 
 NIVEIS = [
     ("estagio", re.compile(r"\bestagi(o|ario|aria)\b|\bintern(ship)?\b")),
@@ -143,6 +146,8 @@ def classificar(vaga: Vaga, hoje: date | None = None) -> Resultado:
         return Resultado(False, "fora da área de TI")
     if APRENDIZ.search(normalizar(vaga.titulo)):
         return Resultado(False, "programa de aprendiz")
+    if DEMO_URL.search(vaga.url) or DEMO_TEXTO.search(normalizar(vaga.titulo)) or DEMO_TEXTO.search(normalizar(vaga.empresa)):
+        return Resultado(False, "vaga de teste do portal")
 
     # Quando o portal informa o prazo de inscrição, ele vale mais que a data de publicação.
     if vaga.prazo:
