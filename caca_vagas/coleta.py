@@ -157,9 +157,11 @@ def sql_de(resumo: Resumo, hoje: date | None = None, agora: str | None = None) -
         linhas.append(f"UPDATE vagas SET ativa = 0 WHERE fonte IN ({fontes}) AND visto_em < {_literal(hoje.isoformat())};")
     limite = (hoje - timedelta(days=DIAS_SEM_VER)).isoformat()
     linhas.append(f"UPDATE vagas SET ativa = 0 WHERE visto_em < {_literal(limite)};")
+    # Vagas aceitas de cada fonte que funcionou: é a série que o `conferir` usa para notar uma queda.
+    por_fonte = {nome: resumo.aceitas[nome] for nome in resumo.fontes_ok}
     linhas.append(
-        f"INSERT INTO coletas (em, vagas, fontes_ok, erros) VALUES "
+        f"INSERT INTO coletas (em, vagas, fontes_ok, erros, por_fonte) VALUES "
         f"({_literal(hoje.isoformat())}, {len(resumo.vagas)}, {_literal(','.join(resumo.fontes_ok))}, "
-        f"{_literal(json.dumps(resumo.erros, ensure_ascii=False))});"
+        f"{_literal(json.dumps(resumo.erros, ensure_ascii=False))}, {_literal(json.dumps(por_fonte))});"
     )
     return "\n".join(linhas) + "\n"

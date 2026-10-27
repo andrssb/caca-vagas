@@ -38,3 +38,10 @@ jobs:
           SMTP_USUARIO: ${{ secrets.SMTP_USUARIO }}
           SMTP_SENHA: ${{ secrets.SMTP_SENHA }}
         run: python -m caca_vagas alertas
+      # Por último: falha a execução (e o GitHub avisa por e-mail) se um portal parou de trazer vagas.
+      - name: Conferir fontes
+        if: always()
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python -m caca_vagas conferir

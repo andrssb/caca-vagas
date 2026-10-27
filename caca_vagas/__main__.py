@@ -1,13 +1,14 @@
 """Uso:
     python -m caca_vagas coletar [--fontes gupy,solides] [--saida vagas.sql]
     python -m caca_vagas alertas [--simular]
+    python -m caca_vagas conferir
 """
 
 import argparse
 import os
 from pathlib import Path
 
-from . import alertas, coleta
+from . import alertas, coleta, conferir
 from .fontes import FONTES
 
 
@@ -43,6 +44,11 @@ def _alertas(args) -> None:
         raise SystemExit(1)
 
 
+def _conferir(_args) -> None:
+    if conferir.rodar().problemas:
+        raise SystemExit(1)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="caca_vagas", description="Caça Vagas: coleta de vagas de TI")
     sub = parser.add_subparsers(dest="comando", required=True)
@@ -55,6 +61,9 @@ def main() -> None:
     p = sub.add_parser("alertas", help="manda o e-mail das vagas novas para cada alerta confirmado")
     p.add_argument("--simular", action="store_true", help="monta os e-mails sem enviar nem marcar como enviado")
     p.set_defaults(func=_alertas)
+
+    p = sub.add_parser("conferir", help="falha se algum portal parou de trazer vagas")
+    p.set_defaults(func=_conferir)
 
     args = parser.parse_args()
     args.func(args)

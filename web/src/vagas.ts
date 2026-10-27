@@ -132,5 +132,9 @@ export async function opcoes(env: Env) {
     env.DB.prepare("SELECT em, vagas FROM coletas ORDER BY id DESC LIMIT 1").first<{ em: string; vagas: number }>(),
     env.DB.prepare("SELECT COUNT(*) AS n FROM vagas WHERE ativa = 1").first<{ n: number }>(),
   ]);
-  return { ufs: ufs.results, tecnologias: tecs.results, atualizado_em: coleta?.em ?? null, total: total?.n ?? 0 };
+  return {
+    ufs: ufs.results, tecnologias: tecs.results, atualizado_em: coleta?.em ?? null, total: total?.n ?? 0,
+    // O botão de alerta só aparece com a conta de e-mail configurada nos secrets do Pages.
+    alertas: Boolean(env.SMTP_USUARIO && env.SMTP_SENHA),
+  };
 }

@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS coletas (
     em        TEXT NOT NULL,
     vagas     INTEGER NOT NULL,
     fontes_ok TEXT NOT NULL,
-    erros     TEXT NOT NULL
+    erros     TEXT NOT NULL,
+    por_fonte TEXT                         -- JSON {fonte: vagas aceitas}, base do aviso de fonte quebrada
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (

@@ -556,6 +556,7 @@ async function carregarOpcoes() {
   try {
     const o = await api("/api/opcoes");
     estado.catalogo = o.tecnologias;
+    $("#botao-alerta").hidden = !o.alertas;
     const select = $("#campo-uf");
     for (const { uf, n } of o.ufs) select.append(new Option(`${uf} (${n.toLocaleString("pt-BR")})`, uf));
     select.value = estado.filtros.uf;
