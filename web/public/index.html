@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="/style.css?v=1">
+  <link rel="stylesheet" href="/style.css?v=2">
 </head>
 <body>
   <a class="pular" href="#resultados">Pular para as vagas</a>
@@ -25,6 +25,10 @@
         <span>caça vagas</span>
       </a>
       <div class="topo-acoes">
+        <nav class="navegacao" aria-label="Páginas">
+          <a href="/" aria-current="page">Vagas</a>
+          <a href="/numeros">Números</a>
+        </nav>
         <button class="icone" id="botao-tema" type="button" aria-label="Trocar tema" title="Trocar tema">
           <svg class="so-claro" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
           <svg class="so-escuro" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
@@ -131,6 +135,10 @@
           <button type="button" data-aba="descartada">Descartadas</button>
         </nav>
         <div class="barra-dir">
+          <button class="botao fantasma" type="button" id="botao-alerta">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+            <span id="rotulo-alerta">Alerta por e-mail</span>
+          </button>
           <button class="botao fantasma abrir-filtros" type="button" id="abrir-filtros">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
             Filtros <span id="n-filtros"></span>
@@ -176,8 +184,21 @@
       <p class="dica" id="dica-senha" hidden>Pelo menos 8 caracteres.</p>
       <p class="erro" id="erro-conta" role="alert"></p>
       <button class="botao largo" type="submit" id="enviar-conta">Entrar</button>
-      <p class="letra-miuda">Seu e-mail serve só para entrar. Sem newsletter e sem compartilhamento. <a href="/privacidade.html" target="_blank">Privacidade</a>.</p>
+      <p class="letra-miuda">Seu e-mail serve para entrar e, só se você criar um alerta, para receber as vagas novas. Sem newsletter e sem compartilhamento. <a href="/privacidade.html" target="_blank">Privacidade</a>.</p>
     </form>
+  </dialog>
+
+  <dialog class="modal" id="modal-alerta" aria-labelledby="titulo-alerta">
+    <form method="dialog" class="modal-fechar"><button class="icone" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></form>
+    <h2 id="titulo-alerta">Alerta por e-mail</h2>
+    <p class="modal-sub" id="sub-alerta"></p>
+    <p class="resumo-alerta" id="resumo-alerta"></p>
+    <p class="dica" id="dica-alerta"></p>
+    <p class="erro" id="erro-alerta" role="alert"></p>
+    <div class="linha-botoes">
+      <button class="botao fantasma perigo-texto" type="button" id="cancelar-alerta" hidden>Cancelar alerta</button>
+      <button class="botao" type="button" id="salvar-alerta">Criar alerta</button>
+    </div>
   </dialog>
 
   <dialog class="modal" id="modal-excluir" aria-labelledby="titulo-excluir">
@@ -216,6 +237,6 @@
     </li>
   </template>
 
-  <script src="/app.js?v=1" type="module"></script>
+  <script src="/app.js?v=2" type="module"></script>
 </body>
 </html>

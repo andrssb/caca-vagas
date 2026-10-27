@@ -273,3 +273,55 @@ select, .filtros input[type="search"] {
 .texto-legal h2 { font-size: 18px; margin: 28px 0 8px; }
 .texto-legal p, .texto-legal li { color: var(--texto-2); }
 .texto-legal ul { padding-left: 20px; }
+
+/* ─── Navegação entre páginas ────────────────────────────── */
+.navegacao { display: flex; gap: 2px; margin-right: 4px; }
+.navegacao a { padding: 8px 10px; border-radius: 8px; color: var(--texto-2); text-decoration: none; font-weight: 600; font-size: 14px; }
+.navegacao a:hover { color: var(--cor); }
+.navegacao a[aria-current="page"] { color: var(--texto); background: var(--superficie-2); }
+
+/* ─── Página de números ──────────────────────────────────── */
+.seletor-nivel button { font-size: 14px; padding: 7px 14px; }
+.painel { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
+.painel[aria-busy="true"] .grade, .painel[aria-busy="true"] .destaques { opacity: .55; transition: opacity .15s; }
+.destaques { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.destaque { background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); padding: 16px 18px; box-shadow: var(--sombra); }
+.destaque strong { display: block; font: 700 32px/1.1 "Chakra Petch", sans-serif; color: var(--texto); }
+.destaque span { display: block; margin-top: 4px; color: var(--texto-2); font-size: 14px; }
+.grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.quadro { background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); padding: 18px 20px; box-shadow: var(--sombra); min-width: 0; }
+.quadro.largo { grid-column: 1 / -1; }
+.quadro h2 { margin: 0; font-size: 16px; }
+.quadro-sub { margin: 4px 0 0; color: var(--texto-3); font-size: 13px; }
+.barras { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 4px; }
+.quadro.largo .barras { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); column-gap: 28px; }
+.barra-linha { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; row-gap: 5px; padding: 6px 8px; margin: 0 -8px; border-radius: 8px; color: inherit; text-decoration: none; }
+a.barra-linha:hover { background: var(--superficie-2); }
+a.barra-linha:hover .barra-nome { color: var(--cor); }
+.barra-nome { font-size: 14px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.barra-valor { font-size: 13px; color: var(--texto-3); font-variant-numeric: tabular-nums; }
+.barra-trilho { grid-column: 1 / -1; height: 8px; border-radius: 4px; background: var(--superficie-2); overflow: hidden; }
+.barra-cheia { display: block; height: 100%; border-radius: 4px; background: var(--cor); }
+.barras-vazio { color: var(--texto-3); font-size: 14px; padding: 8px 0; }
+.metodo { margin: 20px 0 0; color: var(--texto-3); font-size: 13px; max-width: 760px; }
+@media (max-width: 920px) {
+  .destaques { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grade { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .destaque strong { font-size: 26px; }
+  .quadro { padding: 16px; }
+  .quadro.largo .barras { grid-template-columns: minmax(0, 1fr); }
+  .navegacao a { padding: 8px 6px; }
+}
+
+/* ─── Alerta por e-mail ──────────────────────────────────── */
+#botao-alerta.ativo { border-color: color-mix(in srgb, var(--ok) 55%, transparent); color: var(--ok); background: var(--ok-suave); }
+.resumo-alerta { margin: 0 0 12px; padding: 10px 14px; border-radius: 10px; background: var(--superficie-2); color: var(--texto); font-weight: 500; font-size: 14px; overflow-wrap: anywhere; }
+.perigo-texto { color: var(--perigo); }
+.botao.fantasma.perigo-texto:hover { border-color: var(--perigo); color: var(--perigo); }
+@media (max-width: 560px) {
+  #botao-alerta span { display: none; }
+  #botao-alerta { padding: 0 11px; }
+}
+.alinhar-esquerda { justify-content: flex-start; margin-top: 20px; }

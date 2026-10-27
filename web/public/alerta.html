@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alerta de vagas</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1f4fe0">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/tema.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/style.css?v=2">
+</head>
+<body>
+  <header class="topo">
+    <div class="topo-dentro">
+      <a class="marca" href="/" aria-label="Caça Vagas, início">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8"/><circle cx="14" cy="14" r="6.5"/><path d="M19 19l6 6"/></svg>
+        <span>caça vagas</span>
+      </a>
+    </div>
+  </header>
+  <main class="texto-legal" aria-live="polite">
+    <h1 id="titulo">Um instante...</h1>
+    <p id="texto"></p>
+    <p class="resumo-alerta" id="resumo" hidden></p>
+    <p class="linha-botoes alinhar-esquerda">
+      <button class="botao perigo" type="button" id="confirmar-cancelamento" hidden>Cancelar o alerta</button>
+      <a class="botao fantasma" href="/" id="voltar">Ver as vagas</a>
+    </p>
+  </main>
+  <script src="/alerta.js?v=1" type="module"></script>
+</body>
+</html>

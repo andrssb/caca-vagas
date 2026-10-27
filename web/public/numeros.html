@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mercado de TI em números</title>
+  <meta name="description" content="O que as vagas de TI abertas no Brasil pedem hoje: tecnologias, níveis, modalidade, estados e empresas, contados todo dia em 4 portais.">
+  <meta property="og:title" content="O mercado de TI em números">
+  <meta property="og:description" content="Tecnologias mais pedidas, quanto é remoto e quantas vagas são júnior, contado todo dia a partir das vagas abertas em Gupy, Sólides, Programathor e InfoJobs.">
+  <meta name="theme-color" content="#1f4fe0">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/tema.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/style.css?v=2">
+</head>
+<body>
+  <a class="pular" href="#painel">Pular para os números</a>
+
+  <header class="topo">
+    <div class="topo-dentro">
+      <a class="marca" href="/" aria-label="Caça Vagas, início">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8"/><circle cx="14" cy="14" r="6.5"/><path d="M19 19l6 6"/></svg>
+        <span>caça vagas</span>
+      </a>
+      <div class="topo-acoes">
+        <nav class="navegacao" aria-label="Páginas">
+          <a href="/">Vagas</a>
+          <a href="/numeros" aria-current="page">Números</a>
+        </nav>
+        <button class="icone" id="botao-tema" type="button" aria-label="Trocar tema" title="Trocar tema">
+          <svg class="so-claro" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+          <svg class="so-escuro" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-dentro">
+      <h1>O mercado de TI <span>em números.</span></h1>
+      <p class="sub">O que as vagas abertas hoje no Brasil pedem, contado todo dia a partir de Gupy, Sólides, Programathor e InfoJobs.</p>
+      <div class="chips seletor-nivel" id="seletor-nivel" role="group" aria-label="Nível">
+        <button type="button" data-valor="" aria-pressed="true">Todos os níveis</button>
+        <button type="button" data-valor="estagio" aria-pressed="false">Estágio</button>
+        <button type="button" data-valor="junior" aria-pressed="false">Júnior</button>
+        <button type="button" data-valor="pleno" aria-pressed="false">Pleno</button>
+        <button type="button" data-valor="senior" aria-pressed="false">Sênior</button>
+      </div>
+      <p class="estatus" id="estatus" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <main class="painel" id="painel">
+    <div class="destaques" id="destaques"></div>
+
+    <div class="grade">
+      <section class="quadro largo">
+        <h2>Tecnologias mais pedidas</h2>
+        <p class="quadro-sub" id="sub-tecs"></p>
+        <ol class="barras" id="tecnologias"></ol>
+      </section>
+      <section class="quadro">
+        <h2>Vagas por nível</h2>
+        <p class="quadro-sub">Sempre do total. Uma vaga "júnior/pleno" conta nos dois.</p>
+        <ol class="barras" id="niveis"></ol>
+      </section>
+      <section class="quadro">
+        <h2>Modalidade</h2>
+        <ol class="barras" id="modalidades"></ol>
+      </section>
+      <section class="quadro">
+        <h2>Área</h2>
+        <ol class="barras" id="areas"></ol>
+      </section>
+      <section class="quadro">
+        <h2>Estados com mais vagas</h2>
+        <ol class="barras" id="ufs"></ol>
+      </section>
+      <section class="quadro largo">
+        <h2>Empresas com mais vagas abertas</h2>
+        <ol class="barras" id="empresas"></ol>
+      </section>
+    </div>
+
+    <p class="metodo">Como é contado: só entram vagas abertas de TI (desenvolvimento, dados, QA, infra e suporte). As tecnologias e o nível saem do título e da descrição de cada anúncio, e vagas repetidas em dois portais contam uma vez. Os números mudam todo dia.</p>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape-dentro">
+      <p>Coleta diária automática. Cada vaga leva ao anúncio original, onde a candidatura acontece. Confira sempre os detalhes no portal.</p>
+      <p>Feito por <a href="https://andrssb.github.io" target="_blank" rel="noopener">Andres Barbosa</a> ·
+        <a href="https://github.com/andrssb/caca-vagas" target="_blank" rel="noopener">Código no GitHub</a> ·
+        <a href="https://www.linkedin.com/in/andres-barbosa-496088406" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="/privacidade.html">Privacidade</a></p>
+    </div>
+  </footer>
+
+  <script src="/numeros.js?v=1" type="module"></script>
+</body>
+</html>

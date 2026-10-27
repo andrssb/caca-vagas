@@ -80,6 +80,13 @@ export async function buscar(env: Env, params: URLSearchParams, usuarioId: numbe
     valores.push(uf);
   }
 
+  // Usado pelo e-mail do alerta: só as vagas que a coleta viu pela primeira vez depois do último envio.
+  const desde = params.get("desde") ?? "";
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(desde)) {
+    onde.push("v.descoberta_em > ?");
+    valores.push(desde);
+  }
+
   const sql = `SELECT v.chave, v.fonte, v.titulo, v.empresa, v.url, v.cidade, v.uf, v.modalidade, v.contrato, v.niveis,
       v.area, v.tecnologias, v.salario, v.publicada_em, v.prazo, v.ativa, m.status
     FROM vagas v LEFT JOIN marcacoes m ON m.chave = v.chave AND m.usuario_id = ?

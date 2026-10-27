@@ -8,7 +8,7 @@ import json
 import time
 from collections import Counter
 from dataclasses import dataclass, field
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, timedelta
 
 import httpx
 
@@ -135,14 +135,21 @@ def _linha(vaga: Vaga, hoje: date) -> list:
     ]
 
 
-def sql_de(resumo: Resumo, hoje: date | None = None) -> str:
+def agora_utc() -> str:
+    """Mesmo formato do site (toISOString sem milissegundos), para comparar como texto."""
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def sql_de(resumo: Resumo, hoje: date | None = None, agora: str | None = None) -> str:
     hoje = hoje or date.today()
+    agora = agora or agora_utc()
+    # descoberta_em entra só na primeira vez: o UPDATE do conflito não mexe nela.
     atualizar = ", ".join(f"{c} = excluded.{c}" for c in COLUNAS if c != "chave")
     linhas = []
     for vaga in resumo.vagas:
         valores = ", ".join(_literal(v) for v in _linha(vaga, hoje))
         linhas.append(
-            f"INSERT INTO vagas ({', '.join(COLUNAS)}, ativa) VALUES ({valores}, 1) "
+            f"INSERT INTO vagas ({', '.join(COLUNAS)}, ativa, descoberta_em) VALUES ({valores}, 1, {_literal(agora)}) "
             f"ON CONFLICT (chave) DO UPDATE SET {atualizar}, ativa = 1;"
         )
     if resumo.fontes_ok:

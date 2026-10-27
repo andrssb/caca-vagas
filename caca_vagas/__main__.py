@@ -1,11 +1,13 @@
 """Uso:
     python -m caca_vagas coletar [--fontes gupy,solides] [--saida vagas.sql]
+    python -m caca_vagas alertas [--simular]
 """
 
 import argparse
+import os
 from pathlib import Path
 
-from . import coleta
+from . import alertas, coleta
 from .fontes import FONTES
 
 
@@ -33,6 +35,14 @@ def _coletar(args) -> None:
         raise SystemExit(1)
 
 
+def _alertas(args) -> None:
+    if not args.simular and not (os.environ.get("SMTP_USUARIO") and os.environ.get("SMTP_SENHA")):
+        print("SMTP_USUARIO/SMTP_SENHA não configurados: alertas não enviados.")
+        return
+    if alertas.enviar_todos(simular=args.simular):
+        raise SystemExit(1)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="caca_vagas", description="Caça Vagas: coleta de vagas de TI")
     sub = parser.add_subparsers(dest="comando", required=True)
@@ -41,6 +51,10 @@ def main() -> None:
     p.add_argument("--fontes", help=f"lista separada por vírgula ({', '.join(FONTES)})")
     p.add_argument("--saida", default="vagas.sql")
     p.set_defaults(func=_coletar)
+
+    p = sub.add_parser("alertas", help="manda o e-mail das vagas novas para cada alerta confirmado")
+    p.add_argument("--simular", action="store_true", help="monta os e-mails sem enviar nem marcar como enviado")
+    p.set_defaults(func=_alertas)
 
     args = parser.parse_args()
     args.func(args)

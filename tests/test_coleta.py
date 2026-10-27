@@ -59,6 +59,17 @@ def test_vaga_que_volta_e_reativada():
     assert conexao.execute("SELECT ativa FROM vagas").fetchone()[0] == 1
 
 
+def test_descoberta_em_fica_a_da_primeira_coleta():
+    conexao = banco()
+    resumo = Resumo(vagas=[vaga()])
+    resumo.coletadas["gupy"] = 1
+    conexao.executescript(sql_de(resumo, date(2026, 10, 18), "2026-10-18T10:00:00Z"))
+    conexao.executescript(sql_de(resumo, HOJE, "2026-10-19T10:00:00Z"))
+    linha = conexao.execute("SELECT descoberta_em, visto_em FROM vagas").fetchone()
+    assert linha["descoberta_em"] == "2026-10-18T10:00:00Z"
+    assert linha["visto_em"] == HOJE.isoformat()
+
+
 def test_vaga_sem_ser_vista_ha_uma_semana_sai_do_ar_mesmo_com_a_fonte_falhando():
     conexao = banco()
     antes = Resumo(vagas=[vaga("1", "programathor")])

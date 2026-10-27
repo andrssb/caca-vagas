@@ -1,5 +1,6 @@
 -- Banco do site (Cloudflare D1). A coleta em Python escreve em `vagas` e `coletas`;
--- o Worker escreve em `usuarios`, `sessoes`, `marcacoes` e `tentativas`.
+-- o Worker escreve em `usuarios`, `sessoes`, `marcacoes`, `alertas` e `tentativas`.
+-- O envio diário dos alertas (caca_vagas/alertas.py) só atualiza `alertas.ultimo_envio`.
 
 CREATE TABLE IF NOT EXISTS vagas (
     chave        TEXT PRIMARY KEY,           -- fonte:id no portal
@@ -19,7 +20,8 @@ CREATE TABLE IF NOT EXISTS vagas (
     publicada_em TEXT,
     prazo        TEXT,
     visto_em     TEXT NOT NULL,              -- último dia em que a coleta encontrou a vaga
-    ativa        INTEGER NOT NULL DEFAULT 1
+    ativa        INTEGER NOT NULL DEFAULT 1,
+    descoberta_em TEXT                       -- quando a coleta viu a vaga pela 1ª vez (UTC); base do alerta de vaga nova
 );
 CREATE INDEX IF NOT EXISTS idx_vagas_ativa_data ON vagas (ativa, publicada_em DESC);
 
@@ -53,6 +55,17 @@ CREATE TABLE IF NOT EXISTS marcacoes (
     status     TEXT NOT NULL CHECK (status IN ('candidatei', 'descartada')),
     em         TEXT NOT NULL,
     PRIMARY KEY (usuario_id, chave)
+);
+
+-- Um alerta por conta: os filtros da busca, guardados como a query string da página.
+-- Só recebe e-mail depois de confirmar pelo link, para ninguém cadastrar o e-mail de outra pessoa.
+CREATE TABLE IF NOT EXISTS alertas (
+    usuario_id   INTEGER PRIMARY KEY REFERENCES usuarios (id) ON DELETE CASCADE,
+    filtros      TEXT NOT NULL,
+    token        TEXT NOT NULL UNIQUE,      -- vai nos links de confirmar e de cancelar
+    confirmado   INTEGER NOT NULL DEFAULT 0,
+    criado_em    TEXT NOT NULL,
+    ultimo_envio TEXT                       -- vagas descobertas depois disso entram no próximo e-mail
 );
 
 -- Limite de tentativas de login e cadastro por IP.

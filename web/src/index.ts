@@ -3,10 +3,15 @@
 import {
   abrirSessao, conferirSenha, criarUsuario, excedeuTentativas, fecharSessao, usuarioDa, validarCadastro,
 } from "./auth";
+import { cancelarAlerta, confirmarAlerta, lerAlerta, limparFiltros, salvarAlerta } from "./alertas";
+import { numeros } from "./numeros";
 import { buscar, opcoes } from "./vagas";
 
 export interface Env {
   DB: D1Database;
+  // Conta Gmail que envia os e-mails do alerta (senha de app, não a senha da conta).
+  SMTP_USUARIO: string;
+  SMTP_SENHA: string;
 }
 
 const json = (corpo: unknown, status = 200, extras: Record<string, string> = {}) =>
@@ -44,6 +49,9 @@ async function api(pedido: Request, env: Env, url: URL): Promise<Response> {
     case "GET /api/opcoes":
       return json(await opcoes(env), 200, { "Cache-Control": "public, max-age=600" });
 
+    case "GET /api/numeros":
+      return json(await numeros(env, url.searchParams), 200, { "Cache-Control": "public, max-age=1800" });
+
     case "GET /api/eu": {
       const usuario = await usuarioDa(env, pedido);
       return json({ usuario });
@@ -71,6 +79,18 @@ async function api(pedido: Request, env: Env, url: URL): Promise<Response> {
 
     case "POST /api/sair":
       return json({ ok: true }, 200, { "Set-Cookie": await fecharSessao(env, pedido) });
+
+    // Links do e-mail: valem sem estar logado, o token é a prova.
+    case "POST /api/alerta/confirmar":
+    case "POST /api/alerta/cancelar": {
+      const { token } = await corpoJson(pedido);
+      if (typeof token !== "string" || !/^[\w-]{20,64}$/.test(token)) return erro("Link inválido.");
+      if (rota.endsWith("confirmar")) {
+        const alerta = await confirmarAlerta(env, token);
+        return alerta ? json({ ok: true, ...alerta }) : erro("Esse link não vale mais. Crie o alerta de novo no site.", 404);
+      }
+      return (await cancelarAlerta(env, token)) ? json({ ok: true }) : erro("Esse alerta já tinha sido cancelado.", 404);
+    }
   }
 
   // Daqui para baixo, só com conta.
@@ -102,11 +122,30 @@ async function api(pedido: Request, env: Env, url: URL): Promise<Response> {
       return json({ ok: true });
     }
 
+    case "GET /api/alerta":
+      return json({ alerta: await lerAlerta(env, usuario.id) });
+
+    case "PUT /api/alerta": {
+      const filtros = limparFiltros((await corpoJson(pedido)).filtros);
+      if (filtros === null) return erro("Filtros inválidos.");
+      try {
+        return json(await salvarAlerta(env, url.origin, usuario, filtros));
+      } catch (e) {
+        console.error(e);
+        return erro("Não deu para enviar o e-mail de confirmação. Tente de novo em alguns minutos.", 502);
+      }
+    }
+
+    case "DELETE /api/alerta":
+      await env.DB.prepare("DELETE FROM alertas WHERE usuario_id = ?").bind(usuario.id).run();
+      return json({ ok: true });
+
     case "DELETE /api/conta": {
       const { senha } = await corpoJson(pedido);
       if (typeof senha !== "string" || !(await conferirSenha(env, usuario.email, senha))) return erro("Senha incorreta.", 401);
       await env.DB.batch([
         env.DB.prepare("DELETE FROM marcacoes WHERE usuario_id = ?").bind(usuario.id),
+        env.DB.prepare("DELETE FROM alertas WHERE usuario_id = ?").bind(usuario.id),
         env.DB.prepare("DELETE FROM sessoes WHERE usuario_id = ?").bind(usuario.id),
         env.DB.prepare("DELETE FROM usuarios WHERE id = ?").bind(usuario.id),
       ]);

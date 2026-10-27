@@ -16,6 +16,8 @@ const estado = {
   pagina: 1,
   total: 0,
   usuario: null,
+  alerta: null,
+  alertaDepoisDeEntrar: false,
   catalogo: [],
   todasTecs: false,
   pedido: 0,
@@ -290,8 +292,10 @@ async function buscar({ mais = false } = {}) {
 // ─── Conta ────────────────────────────────────────────────
 
 let modoConta = "entrar";
-function abrirConta(modo = "entrar", subtitulo) {
+// alerta: a pessoa veio pelo botão de alerta e, depois de entrar, a janela do alerta abre sozinha.
+function abrirConta(modo = "entrar", subtitulo, { alerta = false } = {}) {
   modoConta = modo;
+  estado.alertaDepoisDeEntrar = alerta;
   const cadastro = modo === "cadastro";
   $("#titulo-conta").textContent = cadastro ? "Criar conta" : "Entrar";
   $("#sub-conta").textContent = subtitulo ?? "Salve as vagas em que você se candidatou e as suas tecnologias.";
@@ -347,10 +351,16 @@ $("#form-conta").addEventListener("submit", async (evento) => {
     $("#modal-conta").close();
     $("#form-conta").reset();
     await carregarUsuario();
+    await carregarAlerta();
     pintarTecs();
     pintarFiltros();
     buscar();
-    avisar(modoConta === "cadastro" ? "Conta criada. Suas candidaturas agora ficam salvas." : "Você entrou.");
+    if (estado.alertaDepoisDeEntrar) {
+      estado.alertaDepoisDeEntrar = false;
+      abrirAlerta();
+    } else {
+      avisar(modoConta === "cadastro" ? "Conta criada. Suas candidaturas agora ficam salvas." : "Você entrou.");
+    }
   } catch (e) {
     erro.textContent = e.message;
   } finally {
@@ -358,7 +368,7 @@ $("#form-conta").addEventListener("submit", async (evento) => {
   }
 });
 
-for (const b of $$(".alternar button")) b.addEventListener("click", () => abrirConta(b.dataset.modo, $("#sub-conta").textContent));
+for (const b of $$(".alternar button")) b.addEventListener("click", () => abrirConta(b.dataset.modo, $("#sub-conta").textContent, { alerta: estado.alertaDepoisDeEntrar }));
 $("#botao-entrar").addEventListener("click", () => abrirConta("entrar"));
 
 const menu = $("#menu-conta");
@@ -372,7 +382,9 @@ document.addEventListener("click", () => { menu.hidden = true; $("#botao-conta")
 $("#botao-sair").addEventListener("click", async () => {
   await api("/api/sair", { metodo: "POST", corpo: {} }).catch(() => {});
   estado.usuario = null;
+  estado.alerta = null;
   pintarConta();
+  pintarAlerta();
   pintarFiltros();
   buscar();
   avisar("Você saiu da conta.");
@@ -386,6 +398,8 @@ $("#form-excluir").addEventListener("submit", async (evento) => {
     await api("/api/conta", { metodo: "DELETE", corpo: { senha: $("#excluir-senha").value } });
     $("#modal-excluir").close();
     estado.usuario = null;
+    estado.alerta = null;
+    pintarAlerta();
     estado.tecs = [];
     guardar("cv_tecs", []);
     pintarConta();
@@ -395,6 +409,96 @@ $("#form-excluir").addEventListener("submit", async (evento) => {
     avisar("Conta excluída. Seus dados foram apagados.");
   } catch (e) {
     $("#erro-excluir").textContent = e.message;
+  }
+});
+
+// ─── Alerta por e-mail ────────────────────────────────────
+
+// Os filtros do alerta são os da busca atual, sem ordem e aba. Remoto entra junto do estado, como na lista.
+function filtrosDoAlerta() {
+  const f = estado.filtros;
+  const p = new URLSearchParams();
+  if (f.q) p.set("q", f.q);
+  for (const nome of MULTIPLOS) if (f[nome].length) p.set(nome, f[nome].join(","));
+  if (f.uf) { p.set("uf", f.uf); if (f.incluir_remoto) p.set("incluir_remoto", "1"); }
+  if (estado.tecs.length) p.set("tec", estado.tecs.join(","));
+  return p.toString();
+}
+
+const ROTULOS_ALERTA = { ...NIVEIS, ...MODALIDADES, nao: "não informado", outros: "outros contratos" };
+function descreverFiltros(filtros) {
+  const p = new URLSearchParams(filtros);
+  const partes = MULTIPLOS.map((nome) => (p.get(nome) ?? "").split(",").filter(Boolean).map((v) => ROTULOS_ALERTA[v] ?? v).join(" ou ")).filter(Boolean);
+  if (p.get("uf")) partes.push(p.get("uf") + (p.get("incluir_remoto") === "1" ? " ou remoto" : ""));
+  if (p.get("q")) partes.push(`"${p.get("q")}"`);
+  if (p.get("tec")) partes.push("suas tecnologias: " + p.get("tec").split(",").join(", "));
+  return partes.length ? partes.join(" · ") : "todas as vagas de TI";
+}
+
+function pintarAlerta() {
+  const a = estado.alerta;
+  const botao = $("#botao-alerta");
+  botao.classList.toggle("ativo", Boolean(a?.confirmado));
+  $("#rotulo-alerta").textContent = !a ? "Alerta por e-mail" : a.confirmado ? "Alerta ativo" : "Confirme o alerta";
+  botao.title = a ? `Seu alerta: ${a.resumo}` : "Receba por e-mail as vagas novas destes filtros";
+}
+
+function abrirAlerta() {
+  if (!estado.usuario) {
+    abrirConta("cadastro", "Crie uma conta grátis para receber por e-mail as vagas novas destes filtros.", { alerta: true });
+    return;
+  }
+  const a = estado.alerta;
+  const atuais = filtrosDoAlerta();
+  const iguais = a && a.filtros === atuais;
+  $("#erro-alerta").textContent = "";
+  $("#cancelar-alerta").hidden = !a;
+  $("#salvar-alerta").hidden = Boolean(iguais);
+  $("#resumo-alerta").textContent = iguais || !a ? descreverFiltros(atuais) : a.resumo;
+  if (!a) {
+    $("#sub-alerta").textContent = `Toda manhã, se aparecer vaga nova com estes filtros, ela chega em ${estado.usuario.email}:`;
+    $("#dica-alerta").textContent = "Antes, mandamos um link para confirmar o e-mail. Só um e-mail por dia, e só quando tiver vaga nova.";
+    $("#salvar-alerta").textContent = "Criar alerta";
+  } else {
+    $("#sub-alerta").textContent = a.confirmado ? `Alerta ativo para ${estado.usuario.email}, com estes filtros:` : `Falta confirmar: abra o link que mandamos para ${estado.usuario.email}. Filtros do alerta:`;
+    $("#dica-alerta").textContent = iguais ? "" : `Os filtros da tela agora são outros: ${descreverFiltros(atuais)}.`;
+    $("#salvar-alerta").textContent = "Usar os filtros da tela";
+  }
+  $("#modal-alerta").showModal();
+}
+
+async function carregarAlerta() {
+  estado.alerta = null;
+  if (estado.usuario) {
+    try { estado.alerta = (await api("/api/alerta")).alerta; } catch {}
+  }
+  pintarAlerta();
+}
+
+$("#botao-alerta").addEventListener("click", abrirAlerta);
+$("#salvar-alerta").addEventListener("click", async () => {
+  const botao = $("#salvar-alerta");
+  botao.disabled = true;
+  try {
+    const r = await api("/api/alerta", { metodo: "PUT", corpo: { filtros: filtrosDoAlerta() } });
+    await carregarAlerta();
+    $("#modal-alerta").close();
+    avisar(r.confirmado ? "Alerta atualizado com os filtros da tela." : r.enviado ? "Mandamos um link para o seu e-mail. Abra para ativar o alerta." : "Filtros salvos. Falta abrir o link que mandamos para o seu e-mail.");
+  } catch (e) {
+    $("#erro-alerta").textContent = e.message;
+  } finally {
+    botao.disabled = false;
+  }
+});
+$("#cancelar-alerta").addEventListener("click", async () => {
+  try {
+    await api("/api/alerta", { metodo: "DELETE", corpo: {} });
+    estado.alerta = null;
+    pintarAlerta();
+    $("#modal-alerta").close();
+    avisar("Alerta cancelado. Nenhum e-mail novo vai chegar.");
+  } catch (e) {
+    $("#erro-alerta").textContent = e.message;
   }
 });
 
@@ -470,3 +574,4 @@ await carregarUsuario();
 pintarFiltros();
 buscar();
 carregarOpcoes();
+carregarAlerta();
