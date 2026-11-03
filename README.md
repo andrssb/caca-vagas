@@ -1,6 +1,6 @@
 # Caça Vagas
 
-Vagas de TI de Gupy, Sólides, Programathor e InfoJobs num lugar só, atualizadas todo dia. Qualquer pessoa filtra por nível, modalidade, estado, contrato e área, marca as tecnologias que usa e recebe uma nota de encaixe para cada vaga. Com uma conta (opcional), salva as vagas em que se candidatou. A candidatura acontece sempre no anúncio original.
+Vagas de TI de quatro portais num lugar só, atualizadas todo dia. Qualquer pessoa filtra por nível, modalidade, estado, contrato e área, marca as tecnologias que usa e recebe uma nota de encaixe para cada vaga. Com uma conta (opcional), salva as vagas em que se candidatou. A candidatura acontece sempre no anúncio original.
 
 ```
 GitHub Actions (todo dia, 7h)                    Cloudflare
